@@ -1771,7 +1771,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
 
     /**
      * Return websites for an item line, based either on websites or store column
-     * @param $item item to check
+     * @param array $item item to check
      * @param bool $default
      * @return mixed list of website ids for item
      */
@@ -1801,7 +1801,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
         if (!isset($this->_wsids[$k])) {
             $this->_wsids[$k] = array();
             $cs = $this->tablename("store");
-            if (trim($k) != "admin") {
+            if (trim($k) !== "admin") {
                 $scodes = csl2arr($k);
                 $qcolstr = $this->arr2values($scodes);
                 $rows = $this->selectAll("SELECT website_id FROM $cs WHERE code IN ($qcolstr) AND store_id!=0 GROUP BY website_id", $scodes);
@@ -1818,10 +1818,8 @@ class Magmi_ProductImportEngine extends Magmi_Engine
     /**
      * update product stock
      *
-     * @param int $pid
-     *            : product id
-     * @param array $item
-     *            : attribute values for product indexed by attribute_code
+     * @param int $pid product id
+     * @param array $item attribute values for product indexed by attribute_code
      */
     public function updateStock($pid, $item, $isnew)
     {
@@ -1864,12 +1862,14 @@ class Magmi_ProductImportEngine extends Magmi_Engine
                 // if magmi_qty_absolute flag is not set, then use standard "relative" qty parsing.
                 if (!isset($item["magmi_qty_absolute"]) || $item["magmi_qty_absolute"] == 0) {
                     // test for relative qty
-                    if ($item["qty"][0] == "+" || $item["qty"][0] == "-") {
-                        $relqty = getRelative($item["qty"]);
+                    if (is_array($item["qty"])) {
+                        if ($item["qty"][0] == "+" || $item["qty"][0] == "-") {
+                            $relqty = getRelative($item["qty"]);
+                        }
                     }
                 }
                 // if relative qty
-                if ($relqty != null) {
+                if ($relqty !== null) {
                     // update UPDATE statement value affectation
                     $svstr = preg_replace("/(^|,)qty=\?/", "$1qty=qty$relqty?", $svstr);
                     $stockvals["qty"] = $item["qty"];

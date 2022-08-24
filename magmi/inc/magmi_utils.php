@@ -44,14 +44,19 @@ function trimarray(&$arr)
     }
 }
 
-// Relative value detection (prepend of + or -)
+/**
+ * Relative value detection (prepend of + or -)
+ *
+ * @param array $val
+ * @return string
+ */
 function getRelative(&$val)
 {
     $dir = "+";
-    if ($val[0] == "-") {
+    if ($val[0] === "-") {
         $val = substr($val, 1);
         $dir = "-";
-    } elseif ($val[0] == "+") {
+    } elseif ($val[0] === "+") {
         $val = substr($val, 1);
     }
     return $dir;
@@ -94,8 +99,7 @@ function truepath($path)
 {
     $opath = $path;
     // whether $path is unix or not
-    $unipath = strlen($path) == 0 || $path{0}
-    != '/';
+    $unipath = strlen($path) == 0 || $path[0] !== '/';
     // attempts to detect if path is relative in which case, add cwd
     if (strpos($path, ':') === false && $unipath) {
         $path = getcwd() . DIRECTORY_SEPARATOR . $path;
@@ -105,10 +109,10 @@ function truepath($path)
     $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
     $absolutes = array();
     foreach ($parts as $part) {
-        if ('.' == $part) {
+        if ('.' === $part) {
             continue;
         }
-        if ('..' == $part) {
+        if ('..' === $part) {
             array_pop($absolutes);
         } else {
             $absolutes[] = $part;

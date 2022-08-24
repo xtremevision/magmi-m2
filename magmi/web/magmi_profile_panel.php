@@ -29,7 +29,7 @@ $conf_ok = $eplconf->hasSection("PLUGINS_DATASOURCES");
 			id="profileconf_msg">
 <?php if ($conf_ok) {
         ?>
-Saved:<?php echo $eplconf->getLastSaved("%c")?>
+Saved:<?php echo $eplconf->getLastSaved()?>
 <?php
     } else {
         ?>

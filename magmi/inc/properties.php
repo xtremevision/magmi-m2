@@ -15,14 +15,12 @@ class InvalidPropertiesException extends Exception
 class Properties
 {
     public $inifile;
-    protected $_props;
-    protected $_specialchars = array('"' => ":DQUOTE:", "'" => ":SQUOTE:", '\\t' => ":TAB:");
 
-    public function __construct()
-    {
-        $this->inifile = null;
-        $this->_props = array();
-    }
+    /**
+     * @var array
+     */
+    protected $_props = [];
+    protected $_specialchars = array('"' => ":DQUOTE:", "'" => ":SQUOTE:", '\\t' => ":TAB:");
 
     public function setPropsFromFlatArray($flatarr)
     {

@@ -148,7 +148,7 @@ if (!$eplconf->hasSection("PLUGINS_DATASOURCES")) {
 	<div class="grid_12 subtitle">
 		<span>Configure Global Parameters</span> <span id="commonconf_msg"
 			class="saveinfo">
-Saved:<?php echo $conf->getLastSaved("%c")?>
+Saved:<?php echo $conf->getLastSaved()?>
 </span>
 	</div>
 </div>

@@ -229,7 +229,7 @@ class ItemIndexer extends Magmi_ItemProcessor
         }
     }
 
-    public function builProductUrlRewrite($pid, $dorewrite = false, $store)
+    public function builProductUrlRewrite($pid, $dorewrite = false, $store='admin')
     {
 
         //new url
