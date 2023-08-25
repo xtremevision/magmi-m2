@@ -371,6 +371,7 @@ class LocalMagentoDirHandler extends MagentoDirHandler
      */
     public function copyFromRemote($remoteurl, $destpath)
     {
+        error_log("copyFromRemote()" . __LINE__);
         $rfg = RemoteFileGetterFactory::getFGInstance($this->_rfgid);
         $mp = str_replace("//", "/", $this->_magdir . "/" . str_replace($this->_magdir, '', $destpath));
         $ok = $rfg->copyRemoteFile($remoteurl, $mp);
@@ -387,6 +388,7 @@ class LocalMagentoDirHandler extends MagentoDirHandler
      */
     public function copy($srcpath, $destpath)
     {
+        error_log("copy() " . __LINE__);
         $result = false;
         $destpath = str_replace("//", "/", $this->_magdir . "/" . str_replace($this->_magdir, '', $destpath));
         if (preg_match('|^.*?://.*$|', $srcpath)) {

@@ -17,8 +17,8 @@
 		href="#REINDEX:config" onclick="fcheck(0)">None</a>
 	<ul>
 	<?php
-$idxarr = explode(",", $this->_plugin->getIndexList());
-$indexes = explode(",", $this->getParam("REINDEX:indexes"));
+$idxarr = explode(",", $this->_plugin->getIndexList() ?? '');
+$indexes = explode(",", $this->getParam("REINDEX:indexes") ?? '');
 foreach ($idxarr as $indexname) {
     ?>
 		<li><input type="checkbox" name="<?php echo $indexname?>"

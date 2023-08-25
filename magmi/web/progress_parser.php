@@ -112,12 +112,12 @@ class DefaultProgressLineParser extends ProgressLineParser
                 }
                 $this->setData("$type:count", $dcount);
                 if ($delapsed > 0) {
-                    $this->setData("$type:speed", ceil(($dcount * 60) / $delapsed));
+                    $this->setData("$type:speed", ceil(($dcount * 60) / (double)$delapsed));
                 } else {
                     $this->setData("$type:speed", 0);
                 }
 
-                $this->setData("$type:elapsed", round($delapsed, 4));
+                $this->setData("$type:elapsed", round((double)$delapsed, 4));
                 $this->setData("$type:incelapsed", round($dlastinc, 4));
                 break;
             case "columns":

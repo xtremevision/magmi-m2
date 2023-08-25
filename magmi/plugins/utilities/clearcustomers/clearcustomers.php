@@ -14,8 +14,8 @@ class ClearCustomerUtility extends Magmi_UtilityPlugin
         $tables = array("customer_address_entity","customer_address_entity_datetime","customer_address_entity_decimal",
             "customer_address_entity_int","customer_address_entity_text","customer_address_entity_varchar",
             "customer_entity","customer_entity_datetime","customer_entity_decimal","customer_entity_int",
-            "customer_entity_text","customer_entity_varchar","tag","tag_properties","tag_relation","wishlist",
-            "wishlist_item","wishlist_item_option","log_customer");
+            "customer_entity_text","customer_entity_varchar","wishlist",
+            "wishlist_item","wishlist_item_option","customer_log");
 
         foreach ($tables as $table) {
             $this->exec_stmt("TRUNCATE TABLE `" . $this->tablename($table) . "`");

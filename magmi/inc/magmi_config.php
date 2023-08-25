@@ -63,7 +63,7 @@ class DirbasedConfig extends Properties
 
     public function load($name = null)
     {
-        if (!isset($this->_props)) {
+        if (!isset($this->_props) || empty($this->_props)) {
             if ($name == null) {
                 $name = $this->inifile;
             }

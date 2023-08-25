@@ -419,8 +419,11 @@ class Magmi_ProductImportEngine extends Magmi_Engine
      */
     public function addExtraAttribute($attr)
     {
-        $attinfo = $this->attrinfo[$attr];
-        $this->_extra_attrs[$attinfo["backend_type"]]["data"][] = $attinfo;
+        if(isset($this->attrinfo[$attr]))
+        {
+            $attinfo = $this->attrinfo[$attr];
+            $this->_extra_attrs[$attinfo["backend_type"]]["data"][] = $attinfo;
+        }
     }
 
     /**
