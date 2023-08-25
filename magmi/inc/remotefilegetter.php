@@ -239,7 +239,6 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
 
     public function copyRemoteFile($url, $dest)
     {
-        error_log("copyRemoteFile()" . __LINE__);
         $result = false;
         $this->_errors = array();
         try {
@@ -260,7 +259,6 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
 
     public function getRemoteFile($url, $dest, $authmode = null, $cookies = null)
     {
-        error_log("getRemoteFile()" . __LINE__);
         $context = $this->createContext($url);
         $ch = $context['curlhandle'];
         $dl_opts = $context['opts']['dl'];
@@ -274,25 +272,19 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
             }
         }
 
-        error_log("getRemoteFile()" . $outname);
-        
         $fp = fopen($outname, "w");
         if ($fp == false) {
             $this->destroyContext($context);
-            error_log("Cannot write file:$outname");
             throw new Exception("Cannot write file:$outname");
         }
         $dl_opts[CURLOPT_FILE] = $fp;
         $this->setURLOptions($url, $dl_opts);
         $this->setAuthOptions($context, $dl_opts);
 
-        error_log("getRemoteFile()" . __LINE__);
-
         // Download the file , force expect to nothing to avoid buffer save problem
         curl_setopt_array($ch, $dl_opts);
         $inf = curl_getinfo($ch);
         if (!curl_exec($ch)) {
-            error_log("getRemoteFile()" . __LINE__);
             if (curl_error($ch) != "") {
                 $err = "Cannot fetch $url :" . curl_error($ch);
             } else {
@@ -301,25 +293,19 @@ class CURL_RemoteFileGetter extends RemoteFileGetter
             $this->destroyContext($context);
             fclose($fp);
             unlink($dest);
-            error_log($err);
             throw new Exception($err);
         } else {
-            error_log("getRemoteFile()" . __LINE__);
             $proto = $context['scheme'];
             if ($proto == 'http' || $proto == 'https') {
-                error_log("getRemoteFile()" . __LINE__);
                 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 $ok = ($httpCode < 400);
                 if (!$ok) {
                     fclose($fp);
                     @unlink($outname);
-                    error_log('Cannot fetch URL :'.$url);
                     throw new Exception('Cannot fetch URL :'.$url);
                 }
-                error_log("getRemoteFile() httpCode " . $httpCode);
             }
         }
-        error_log("getRemoteFile()" . __LINE__);
 
         fclose($fp);
         $this->destroyContext($context);

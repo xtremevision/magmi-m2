@@ -23,7 +23,6 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         $this->magdir = Magmi_Config::getInstance()->getMagentoDir();
         $this->_mdh = MagentoDirHandlerFactory::getInstance()->getHandler($this->magdir);
         $this->_mdh->setRemoteGetterId("image");
-        error_log("mdh: " . get_class($this->_mdh));
         
         // remote root
         if ($this->getParam("IMG:remoteroot", "")) {
@@ -440,15 +439,12 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
      */
     public function copyImageFile($imgfile, &$item, $extra)
     {
-        error_log("in copyImageFile");
         if ($imgfile == "__NULL__" || $imgfile == null) {
-            error_log("$imgfile is null");
             return false;
         }
 
         // check for source image in error
         if ($this->isErrorImage($imgfile)) {
-            error_log("Error $imgfile");
             if ($this->_newitem) {
                 $this->fillErrorAttributes($item);
             };
@@ -457,14 +453,12 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
 
         //handle remote root per image
         if (!is_remote_path($imgfile)) {
-            error_log("! is_remote_path $imgfile");
             if ($this->_remoteroot != "") {
                 $imgfile = $this->_remoteroot . str_replace("//", "/", "/$imgfile");
             }
         }
         //handle amazon specific
         if (is_remote_path($imgfile)) {
-            error_log("is_remote_path $imgfile");
             // Amazon images patch , remove SLXXXX part
             if (preg_match('|amazon\..*?/images/I|', $imgfile)) {
                 $pattern = '/\bSL[0-9]+\./i';
@@ -474,7 +468,6 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
 
         $source = $this->findImageFile($imgfile);
         if ($source == false) {
-            error_log("$imgfile not found");
             $this->log("$imgfile cannot be found in images path", "warning");
             // last image in error,add it to error cache
             $this->setErrorImg($imgfile);
@@ -491,36 +484,27 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         $impath = "/$i1/$i2/$bimgfile";
         // target directory;
             
-        error_log("current cwd: " . getcwd());
         if(!strstr(getcwd(), "pub"))
             $l2d = "pub/media/catalog/product/$i1/$i2";
         else
             $l2d = "media/catalog/product/$i1/$i2";
         // test for existence
         $targetpath = "$l2d/$bimgfile";
-        error_log("l2d " . $l2d);
-        error_log("targetpath " . $targetpath);
         
         /* test for same image (without problem) */
         if ($impath == $this->_lastimage) {
             return $impath;
         }
         
-        error_log("mdh->file_exists() " . $this->_mdh->file_exists($targetpath));
-        error_log("writemode " . $this->getParam("IMG:writemode"));
-        
         /* test if imagefile comes from export */
         if (!$this->_mdh->file_exists($targetpath) || $this->getParam("IMG:writemode") == "override") {
-            error_log("file not exists || writemode is override");
             // if we already had problems with this target,assume we'll get others.
             if ($this->isErrorImage($impath)) {
-                error_log("isError");
                 return false;
             }
 
             /* try to recursively create target dir */
             if (!$this->_mdh->file_exists($l2d)) {
-                error_log("creating target dir");
                 $tst = $this->_mdh->mkdir($l2d, Magmi_Config::getInstance()->getDirMask(), true);
                 if (!$tst) {
                     // if we had problem creating target directory,add target to error cache
@@ -533,7 +517,6 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
             }
 
             if (!$this->saveImage($imgfile, $targetpath)) {
-                error_log("saving image");
                 $errors = $this->_mdh->getLastError();
                 $this->fillErrorAttributes($item);
                 $this->log("error copying $l2d/$bimgfile : {$errors["type"]},{$errors["message"]}", "warning");
@@ -541,11 +524,9 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
                 $this->setErrorImg($impath);
                 return false;
             } else {
-                error_log("save image failed");
                 @$this->_mdh->chmod("$l2d/$bimgfile", Magmi_Config::getInstance()->getFileMask());
 
                 if ($this->getParam("IMG:storeindb", "no") == "yes") {
-                    error_log("store in DB");
                     /* create target dirs if they don't exist */
                     $dir_table = $this->tablename('core_directory_storage');
                     // get "catalog/product" path ID
@@ -591,7 +572,6 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         }
         $this->_lastimage = $impath;
         /* return image file name relative to media dir (with leading / ) */
-        error_log("returning " . $impath);
         return $impath;
     }
 
