@@ -484,10 +484,13 @@ class ImageAttributeItemProcessor extends Magmi_ItemProcessor
         $impath = "/$i1/$i2/$bimgfile";
         // target directory;
             
-        if(!strstr(getcwd(), "pub"))
+        if(!strstr(getcwd(), "pub")) {
             $l2d = "pub/media/catalog/product/$i1/$i2";
-        else
+        }
+        else {
             $l2d = "media/catalog/product/$i1/$i2";
+        }
+        
         // test for existence
         $targetpath = "$l2d/$bimgfile";
         
