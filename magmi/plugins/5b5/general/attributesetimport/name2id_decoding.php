@@ -83,7 +83,6 @@ class Name2IdDecoder
                     $indexedResult[] = $mappingTable[$values];
                 } else {
                     $indexedResult[] = $record[$columnName];
-                    error_log("Mapped value not found for column $columnName for name(s): ".print_r($values, true));
                 }
             }
         }
