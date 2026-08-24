@@ -828,7 +828,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
     public function touchProduct($pid)
     {
         $tname = $this->tablename('catalog_product_entity');
-        $this->update("UPDATE $tname SET updated_at=? WHERE entity_id=?", array(strftime("%Y-%m-%d %H:%M:%S"), $pid));
+        $this->update("UPDATE $tname SET updated_at=? WHERE entity_id=?", array(date("Y-m-d H:i:s"), $pid));
     }
 
     public function engineRun($params, $forcebuiltin = array())

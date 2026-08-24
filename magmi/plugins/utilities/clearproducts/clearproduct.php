@@ -47,12 +47,6 @@ class ClearProductUtility extends Magmi_UtilityPlugin
             "catalog_category_product_index","catalog_category_product","cataloginventory_stock_item",
             "cataloginventory_stock_status");
 
-        // clear flat catalogs index
-        $stmt = $this->exec_stmt("SHOW TABLES LIKE '" . $this->tablename('catalog_product_flat') . "%'", null, false);
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $this->exec_stmt("TRUNCATE TABLE " . $row[0]);
-        }
-
         foreach ($tables as $table) {
             $this->exec_stmt("TRUNCATE TABLE `" . $this->tablename($table) . "`");
         }

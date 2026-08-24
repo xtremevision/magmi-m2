@@ -45,18 +45,6 @@ class ClearProductandcategoryUtility extends Magmi_UtilityPlugin
             $tables[] = "report_viewed_product_aggregated_yearly";
         }
 
-        // clear flat catalogs index
-        $stmt = $this->exec_stmt("SHOW TABLES LIKE '" . $this->tablename('catalog_product_flat') . "%'", null, false);
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $this->exec_stmt("TRUNCATE TABLE " . $row[0]);
-        }
-
-        // clear flat category index
-        $stmt = $this->exec_stmt("SHOW TABLES LIKE '" . $this->tablename('catalog_category_flat') . "%'", null, false);
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $this->exec_stmt("TRUNCATE TABLE " . $row[0]);
-        }
-
         foreach ($tables as $table) {
             $this->exec_stmt("TRUNCATE TABLE `" . $this->tablename($table) . "`");
         }

@@ -56,7 +56,7 @@ if ($epc->save()) {
         }
     }
     $date = filemtime($epc->getConfFile());
-    echo "Profile $profile saved (" . strftime("%c", $date) . ")";
+    echo "Profile $profile saved (" . date("r", $date) . ")";
 } else {
     $lasterr = error_get_last();
     echo "<div class='error'>" . $lasterr['message'] . "</div>";

@@ -15,16 +15,7 @@ class productdeleter extends Magmi_ItemProcessor
 
     public function removeFromFlat($pid)
     {
-        $this->log("Cleaning flat tables before reindex...", "info");
-        $stmt = $this->exec_stmt("SHOW TABLES LIKE '" . $this->tablename('catalog_product_flat') . "%'", null, false);
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $tname = $row[0];
-            // removing records in flat tables that are no more linked to entries in catalog_product_entity table
-            // for some reasons, this seem to happen
-            $sql = "DELETE cpf.* FROM $tname as cpf
-			WHERE cpf.entity_id=?";
-            $this->delete($sql, $pid);
-        }
+        // Magento 2 has no catalog product flat tables.
     }
 
     public function processItemAfterId(&$item, $params = null)

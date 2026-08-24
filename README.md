@@ -1,5 +1,28 @@
+Local Magmi Core Compatibility Changes
+======================================
+
+Updated: 2026-08-23
+
+The installed Magmi fork reports version `0.7.24-git` and includes Magento 2
+adaptations. The following local changes have been made:
+
+- Product create/update/touch timestamps and the remaining web status timestamps
+  were migrated from removed PHP 8.5 `strftime()` calls to `date()` calls.
+- Runtime `core_store` references discovered in optional plugins were changed
+  to Magento 2's `store` table.
+- A dead commented `core_website` query was removed.
+- Obsolete Magento 1 product-flat cleanup was removed from the reindexing and
+  product-deletion plugins.
+- Obsolete Magento 1 product-flat and category-flat truncation was removed from
+  the destructive catalog-clearing utilities.
+- The removed `catalog_product_flat` and `catalog_category_flat` indexers were
+  removed from the default reindexing plugin configuration.
+
+Upstream Magmi 2 README
+=======================
+
 Magmi 2 for Magento 2 > 2.1.x
-===========================
+-----------------------------
 
 This is fork from official magmi Github reposiotry (https://github.com/dweeves/magmi-git).
 This fork use version 0.7.23 of magmi with changes for Magento 2 imported from repositories:
