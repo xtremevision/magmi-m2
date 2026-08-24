@@ -188,7 +188,7 @@ class TagProcessor extends Magmi_ItemProcessor
         $sids = $this->getItemStoreIds($item);
         // we need a real store id , not admin so let's find one
         if (count($sids) == 1 && $sids[0] == 0) {
-            $sql = "SELECT store_id FROM " . $this->tablename("core_store") .
+            $sql = "SELECT store_id FROM " . $this->tablename("store") .
                  " WHERE website_id>0 AND is_active=1 ORDER BY website_id LIMIT 1 ";
             $sid = $this->selectone($sql, null, "store_id");
             if ($sid !== null) {

@@ -1338,8 +1338,8 @@ class Magmi_ProductImportEngine extends Magmi_Engine
         $item['type_id'] = $item['type'];
         $item['attribute_set_id'] = $asid;
         $item['entity_type_id'] = $this->getProductEntityType();
-        $item['created_at'] = strftime("%Y-%m-%d %H:%M:%S");
-        $item['updated_at'] = strftime("%Y-%m-%d %H:%M:%S");
+        $item['created_at'] = date("Y-m-d H:i:s");
+        $item['updated_at'] = date("Y-m-d H:i:s");
         $columns = array_intersect(array_keys($item), $this->getProdCols());
         $values = $this->filterkvarr($item, $columns);
         $sql = "INSERT INTO `$tname` (" . implode(",", $columns) . ") VALUES (" . $this->arr2values($columns) . ")";
@@ -1375,7 +1375,7 @@ class Magmi_ProductImportEngine extends Magmi_Engine
             $item['type_id'] = $item['type'];
         }
         $item['entity_type_id'] = $this->getProductEntityType();
-        $item['updated_at'] = strftime("%Y-%m-%d %H:%M:%S");
+        $item['updated_at'] = date("Y-m-d H:i:s");
         $columns = array_intersect(array_keys($item), $this->getProdCols());
         $values = $this->filterkvarr($item, $columns);
 
@@ -1894,9 +1894,6 @@ class Magmi_ProductImportEngine extends Magmi_Engine
         // also works for multiple stock ids.
 
         // [start] exanto.de - this does not work inside a DB transaction bc cataloginventory_stock_item is not written yet on fresh imports
-        /*
-         * :ORG: $sql="INSERT INTO `$css` SELECT csit.product_id,ws.website_id,cis.stock_id,csit.qty,? as stock_status FROM `$csit` as csit JOIN ".$this->tablename("core_website")." as ws ON ws.website_id IN (".$this->arr2values($wsids).") JOIN ".$this->tablename("cataloginventory_stock")." as cis ON cis.stock_id=? WHERE product_id=? ON DUPLICATE KEY UPDATE stock_status=VALUES(`stock_status`),qty=VALUES(`qty`)";
-         */
         // Fixed version
         $cpe = $this->tablename("catalog_product_entity");
         // Fix , $stockvals is already a mix between item keys & stock table keys.
