@@ -4,8 +4,12 @@ require_once("security.php");
 require_once("../inc/magmi_statemanager.php");
 $tid = $_REQUEST["traceid"];
 $tracefile = Magmi_StateManager::getTraceFile();
-$f = fopen($tracefile, "r");
+$f = @fopen($tracefile, "r");
 $display = false;
+if ($f === false) {
+    echo "Trace not found";
+    return;
+}
 $startout = false;
 while (!feof($f)) {
     $line = fgets($f);

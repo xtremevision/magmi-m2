@@ -440,7 +440,10 @@ abstract class Magmi_Engine extends DbHelper
         $traces = $e->getTrace();
         $tk = $e->getMessage();
         $traceinfo = $this->getExceptionTrace($tk, $traces);
-        $f = fopen(Magmi_StateManager::getTraceFile(), "a");
+        $f = @fopen(Magmi_StateManager::getTraceFile(), "a");
+        if ($f === false) {
+            return;
+        }
         fwrite($f, "---- TRACE : $this->_excid -----\n");
         fwrite($f, "---- DATE : " . date('Y-m-d H:i:s') . " ------\n");
         try {
@@ -469,8 +472,7 @@ abstract class Magmi_Engine extends DbHelper
     final public function run($params = array())
     {
         try {
-            $f = fopen(Magmi_StateManager::getTraceFile(), "w");
-            fclose($f);
+            Magmi_StateManager::clearTrace();
             $enginf = $this->getEngineInfo();
             $this->log("MAGMI by dweeves - version:" . Magmi_Version::$version, "title");
             $this->log("Running {$enginf["name"]} v${enginf["version"]} by ${enginf["author"]}", "startup");

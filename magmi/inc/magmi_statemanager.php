@@ -32,6 +32,17 @@ class Magmi_StateManager
         return $pfname;
     }
 
+    public static function clearTrace()
+    {
+        $f = @fopen(self::getTraceFile(), "w");
+        if ($f === false) {
+            return false;
+        }
+        fclose($f);
+        @chmod(self::getTraceFile(), 0664);
+        return true;
+    }
+
     public static function setState($state, $force = false)
     {
         if (self::$_state == $state && !$force) {
@@ -44,9 +55,7 @@ class Magmi_StateManager
         fclose($f);
         @chmod(self::getStateFile(), 0664);
         if ($state == "running") {
-            $f = fopen(self::getTraceFile(), "w");
-            fclose($f);
-            @chmod(self::getTraceFile(), 0664);
+            self::clearTrace();
         }
     }
 
